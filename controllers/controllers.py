@@ -16,8 +16,10 @@ import numpy as np
 
 def get_face_encoding_from_base64(base64String):
     image = fr.load_image_file(io.BytesIO(base64.b64decode(base64String)))
-    image_encoding = fr.face_encodings(image)
+    face_location = fr.face_location(image)
+    image_encoding = fr.face_encodings(face_location)
     return image_encoding
+
 
 class BaseRest(http.Controller):
     @http.route('/api/auth', auth='none', type='http', methods=['POST'], csrf=False)
@@ -83,15 +85,16 @@ class BaseRest(http.Controller):
                     # image_user = get_face_encoding_from_base64(user.profile)                
                     result = fr.compare_faces(known_faces, encoding)
                     name = 'unknown'
-                    face_distances = fr.face_distance(known_faces, encoding)
-                    best_match_index = np.argmin(face_distances)
-                    if result[best_match_index]:
-                        name = known_face_names[best_match_index]
+
+                    # face_distances = fr.face_distance(known_faces, encoding)
+                    # best_match_index = np.argmin(face_distances)
+                    # if result[best_match_index]:
+                    #     name = known_face_names[best_match_index]
                     
                     print(result)
-                    # if True in result:
-                    #     first_match_index = matches.index(True)
-                    #     name = known_face_names[first_match_index]
+                    if True in result:
+                        first_match_index = matches.index(True)
+                        name = known_face_names[first_match_index]
                     print(name)
                     response['name'] = name
                     # if result[0]:
