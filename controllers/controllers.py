@@ -77,7 +77,7 @@ class BaseRest(http.Controller):
                 known_faces.append(get_face_encoding_from_base64(user_w_profile.profile))
                 known_face_names.append(user_w_profile.name)
             if len(image_receive) > 0:
-                print(known_faces_names)
+                print(known_face_names)
                 for encoding in image_receive:                    
                     # image_user = get_face_encoding_from_base64(user.profile)                
                     result = fr.compare_faces(known_faces, encoding)
