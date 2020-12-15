@@ -72,10 +72,10 @@ class BaseRest(http.Controller):
             image_receive = get_face_encoding_from_base64(kw['image'])
             users = request.env['res.users'].search([('active', '=', True), ('profile', '!=', False)])
             known_faces = []
-            known_faces_name = []
+            known_faces_names = []
             for user_w_profile in users:
                 known_faces.append(get_face_encoding_from_base64(user_w_profile.profile))
-                known_faces_name.append(user_w_profile.name)
+                known_faces_names.append(user_w_profile.name)
             if len(image_receive) > 0:
                 for encoding in image_receive:                    
                     # image_user = get_face_encoding_from_base64(user.profile)                
@@ -85,6 +85,7 @@ class BaseRest(http.Controller):
                     # if matches[best_match_index]:
                     #     name = known_face_names[best_match_index]
                     name = 'unknown'
+                    print(result)
                     if True in result:
                         first_match_index = matches.index(True)
                         name = known_face_names[first_match_index]
