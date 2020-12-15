@@ -80,7 +80,7 @@ class BaseRest(http.Controller):
                 for encoding in image_receive:                    
                     # image_user = get_face_encoding_from_base64(user.profile)                
                     result = fr.compare_faces(known_faces, encoding)
-                    face_distances = fr.face_distance(known_face_encodings, face_encoding)
+                    face_distances = fr.face_distance(known_faces, face_encoding)
                     best_match_index = np.argmin(face_distances)
                     if matches[best_match_index]:
                         name = known_face_names[best_match_index]
