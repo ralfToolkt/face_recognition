@@ -85,6 +85,7 @@ class BaseRest(http.Controller):
                     if matches[best_match_index]:
                         name = known_face_names[best_match_index]
                     print(name)
+                    response['name'] = name
                     # if result[0]:
                     #     if user.check_attendance(kw['longitude'], kw['latitude'], kw['address']):
                     #         response['result'] = 'Attendace Success'
