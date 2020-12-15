@@ -71,6 +71,7 @@ class BaseRest(http.Controller):
         if user:
             image_receive = get_face_encoding_from_base64(kw['image'])
             users = request.env['res.users'].search([('active', '=', True), ('profile', '!=', False)])
+            print(users)
             known_faces = []
             known_face_names = []
             for user_w_profile in users:
