@@ -84,14 +84,14 @@ class BaseRest(http.Controller):
                     best_match_index = np.argmin(face_distances)
                     if matches[best_match_index]:
                         name = known_face_names[best_match_index]
-                    print(result[0])
-                    if result[0]:
-                        if user.check_attendance(kw['longitude'], kw['latitude'], kw['address']):
-                            response['result'] = 'Attendace Success'
-                        else:
-                            response['result'] = 'Attendace Today Already recorded'
-                    else:
-                        response['result'] = 'Cant Recognize you, Please try again'
+                    print(name)
+                    # if result[0]:
+                    #     if user.check_attendance(kw['longitude'], kw['latitude'], kw['address']):
+                    #         response['result'] = 'Attendace Success'
+                    #     else:
+                    #         response['result'] = 'Attendace Today Already recorded'
+                    # else:
+                    #     response['result'] = 'Cant Recognize you, Please try again'
                     # response['result'] = '%s'%result[0]
             else:
                 response['result'] = 'Cant Recognize, Please try again'
