@@ -85,7 +85,7 @@ class BaseRest(http.Controller):
                     name = 'unknown'
                     face_distances = fr.face_distance(known_faces, encoding)
                     best_match_index = np.argmin(face_distances)
-                    if matches[best_match_index]:
+                    if result[best_match_index]:
                         name = known_face_names[best_match_index]
                     
                     print(result)
