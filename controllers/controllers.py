@@ -69,17 +69,21 @@ class BaseRest(http.Controller):
         response = {}
         user = request.env['res.users'].sudo().search([('token', '=', kw['token'])])
         if user:
-            print(kw['image'])
-            image_receive = get_face_encoding_from_base64(kw['image'] + '======')
+            # print(kw['image'])
+            try:
+                image_receive = get_face_encoding_from_base64(kw['image'] + '======')
+            except:
+                response['error'] = 'Not a clear image'
+                return request.make_response(json.dumps(response), [('Access-Control-Allow-Origin', '*')])
             users = request.env['res.users'].sudo().search([('active', '=', True), ('profile', '!=', False)])
-            print(users)
+            # print(users)
             known_faces = []
             known_face_names = []
             for user_w_profile in users:
                 known_faces.append(get_face_encoding_from_base64(user_w_profile.profile))
                 known_face_names.append(user_w_profile.name)
             if len(image_receive) > 0:
-                print(known_face_names)
+                # print(known_face_names)
                 # for encoding in image_receive:                    
                     # image_user = get_face_encoding_from_base64(user.profile)                
                 result = fr.compare_faces(known_faces, image_receive)
