@@ -91,7 +91,7 @@ class BaseRest(http.Controller):
                     
                 print(result)
                 if True in result:
-                    first_match_index = matches.index(True)
+                    first_match_index = result.index(True)
                     name = known_face_names[first_match_index]
                 print(name)
                 response['name'] = name
