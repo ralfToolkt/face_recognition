@@ -11,22 +11,13 @@ import random
 import face_recognition as fr
 import io
 import base64
-from PIL import Image
-import cv2
 import numpy as np
 
 
-# Take in base64 string and return cv image
-def stringToRGB(base64_string):
-    imgdata = base64.b64decode(str(base64_string))
-    image = Image.open(io.BytesIO(imgdata))
-    return cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
-
 def get_face_encoding_from_base64(base64String):
-    image = fr.load_image_file(stringToRGB(base64String))
-    image_encoding = fr.face_encodings(image)
+    image = fr.load_image_file(io.BytesIO(base64.b64decode(base64String)))
+    image_encoding = fr.face_encodings(image)[0]
     return image_encoding
-
 
 class BaseRest(http.Controller):
     @http.route('/api/auth', auth='none', type='http', methods=['POST'], csrf=False)
