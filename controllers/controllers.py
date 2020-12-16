@@ -79,22 +79,22 @@ class BaseRest(http.Controller):
                 known_face_names.append(user_w_profile.name)
             if len(image_receive) > 0:
                 print(known_face_names)
-                for encoding in image_receive:                    
+                # for encoding in image_receive:                    
                     # image_user = get_face_encoding_from_base64(user.profile)                
-                    result = fr.compare_faces(known_faces, encoding)
-                    name = 'unknown'
+                result = fr.compare_faces(known_faces, image_receive)
+                name = 'unknown'
 
                     # face_distances = fr.face_distance(known_faces, encoding)
                     # best_match_index = np.argmin(face_distances)
                     # if result[best_match_index]:
                     #     name = known_face_names[best_match_index]
                     
-                    print(result)
-                    if True in result:
-                        first_match_index = matches.index(True)
-                        name = known_face_names[first_match_index]
-                    print(name)
-                    response['name'] = name
+                print(result)
+                if True in result:
+                    first_match_index = matches.index(True)
+                    name = known_face_names[first_match_index]
+                print(name)
+                response['name'] = name
                     # if result[0]:
                     #     if user.check_attendance(kw['longitude'], kw['latitude'], kw['address']):
                     #         response['result'] = 'Attendace Success'
