@@ -69,6 +69,7 @@ class BaseRest(http.Controller):
         response = {}
         user = request.env['res.users'].sudo().search([('token', '=', kw['token'])])
         if user:
+            print(kw['image'])
             image_receive = get_face_encoding_from_base64(kw['image'] + '======')
             users = request.env['res.users'].sudo().search([('active', '=', True), ('profile', '!=', False)])
             print(users)
