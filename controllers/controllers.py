@@ -23,7 +23,7 @@ def stringToRGB(base64_string):
     return cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
 
 def get_face_encoding_from_base64(base64String):
-    image = fr.load_image_file(stringToRGB(base64_string))
+    image = fr.load_image_file(stringToRGB(base64String))
     image_encoding = fr.face_encodings(image)
     return image_encoding
 
