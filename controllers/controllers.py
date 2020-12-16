@@ -100,7 +100,7 @@ class BaseRest(http.Controller):
                     name = known_face_names[first_match_index]
                 print(name)
                 response['name'] = name.name
-                if response['name'] != 'unknown':
+                if 'name' in response:
                     if name.check_attendance(kw['longitude'], kw['latitude'], kw['address']):
                         response['result'] = 'Attendace Success'
                     else:
