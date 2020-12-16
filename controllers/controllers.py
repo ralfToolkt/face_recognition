@@ -22,13 +22,8 @@ def stringToRGB(base64_string):
     image = Image.open(io.BytesIO(imgdata))
     return cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
 
-def get_face_encoding_from_base64(base64String,name):
-    imgdata = base64.b64decode(base64String)
-    filename = f'{name}.jpg'
-    with open(filename, 'wb') as f:
-        f.write(imgdata)
-        # face_location = fr.face_location(image)
-    image = fr.load_image_file(filename)
+def get_face_encoding_from_base64(base64String):
+    image = fr.load_image_file(stringToRGB(base64_string))
     image_encoding = fr.face_encodings(image)
     return image_encoding
 
@@ -83,13 +78,13 @@ class BaseRest(http.Controller):
         response = {}
         user = request.env['res.users'].sudo().search([('token', '=', kw['token'])])
         if user:
-            image_receive = stringToRGB(kw['image'])
+            image_receive = get_face_encoding_from_base64(kw['image'])
             users = request.env['res.users'].sudo().search([('active', '=', True), ('profile', '!=', False)])
             print(users)
             known_faces = []
             known_face_names = []
             for user_w_profile in users:
-                known_faces.append(stringToRGB(user_w_profile.profile)
+                known_faces.append(get_face_encoding_from_base64(user_w_profile.profile)
                 known_face_names.append(user_w_profile.name)
             if len(image_receive) > 0:
                 print(known_face_names)
