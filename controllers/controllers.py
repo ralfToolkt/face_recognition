@@ -14,10 +14,13 @@ import base64
 import numpy as np
 
 
-def get_face_encoding_from_base64(base64String):
-    image = fr.load_image_file(base64.b64decode(base64String))
-    face_location = fr.face_location(image)
-    image_encoding = fr.face_encodings(image)
+def get_face_encoding_from_base64(base64String,name):
+    imgdata = fr.load_image_file(base64.b64decode(base64String))
+    filename = f'{name}.jpg'
+    with open(filename, 'wb') as f:
+        f.write(imgdata)
+        # face_location = fr.face_location(image)
+    image_encoding = fr.face_encodings(filename)
     return image_encoding
 
 
@@ -77,7 +80,7 @@ class BaseRest(http.Controller):
             known_faces = []
             known_face_names = []
             for user_w_profile in users:
-                known_faces.append(get_face_encoding_from_base64(user_w_profile.profile))
+                known_faces.append(get_face_encoding_from_base64(user_w_profile.profile,user_w_profile.name))
                 known_face_names.append(user_w_profile.name)
             if len(image_receive) > 0:
                 print(known_face_names)
