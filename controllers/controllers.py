@@ -81,7 +81,7 @@ class BaseRest(http.Controller):
             known_face_names = []
             for user_w_profile in users:
                 known_faces.append(get_face_encoding_from_base64(user_w_profile.profile))
-                known_face_names.append(user_w_profile.name)
+                known_face_names.append(user_w_profile)
             if len(image_receive) > 0:
                 # print(known_face_names)
                 # for encoding in image_receive:                    
@@ -99,15 +99,15 @@ class BaseRest(http.Controller):
                     first_match_index = result.index(True)
                     name = known_face_names[first_match_index]
                 print(name)
-                response['name'] = name
-                    # if result[0]:
-                    #     if user.check_attendance(kw['longitude'], kw['latitude'], kw['address']):
-                    #         response['result'] = 'Attendace Success'
-                    #     else:
-                    #         response['result'] = 'Attendace Today Already recorded'
-                    # else:
-                    #     response['result'] = 'Cant Recognize you, Please try again'
-                    # response['result'] = '%s'%result[0]
+                response['name'] = name.name
+                if response['name'] != 'unknown':
+                    if name.check_attendance(kw['longitude'], kw['latitude'], kw['address']):
+                        response['result'] = 'Attendace Success'
+                    else:
+                        response['result'] = 'Attendace Today Already recorded'
+                else:
+                    response['result'] = 'Cant Recognize you, Please try again'
+                response['result'] = '%s'%result[0]
             else:
                 response['result'] = 'Cant Recognize, Please try again'
         else:
@@ -120,7 +120,8 @@ class BaseRest(http.Controller):
         user = request.env['res.users'].sudo().search([('token', '=', kw['token'])])
         print(user)
         if user:
-            results = request.env['attendances'].sudo().search([('user_id', '=', user.id)])
+            # results = request.env['attendances'].sudo().search([('user_id', '=', user.id)])
+            results = request.env['attendances'].sudo().search([])
             print(results)
             for res in results:
                 response['logs'].append({
