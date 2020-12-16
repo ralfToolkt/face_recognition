@@ -130,6 +130,7 @@ class BaseRest(http.Controller):
                     'latitude': res.latitude,
                     'longitude': res.longitude,
                     'address': res.address,
+                    'name': res.user_id.name
                 })
         return request.make_response(json.dumps(response), [('Access-Control-Allow-Origin', '*')])
 
