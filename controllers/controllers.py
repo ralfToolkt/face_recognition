@@ -11,8 +11,16 @@ import random
 import face_recognition as fr
 import io
 import base64
+from PIL import Image
+import cv2
 import numpy as np
 
+
+# Take in base64 string and return cv image
+def stringToRGB(base64_string):
+    imgdata = base64.b64decode(str(base64_string))
+    image = Image.open(io.BytesIO(imgdata))
+    return cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
 
 def get_face_encoding_from_base64(base64String,name):
     imgdata = base64.b64decode(base64String)
@@ -75,13 +83,13 @@ class BaseRest(http.Controller):
         response = {}
         user = request.env['res.users'].sudo().search([('token', '=', kw['token'])])
         if user:
-            image_receive = get_face_encoding_from_base64(kw['image'], 'image_receive_by_rest')
+            image_receive = stringToRGB(kw['image'])
             users = request.env['res.users'].sudo().search([('active', '=', True), ('profile', '!=', False)])
             print(users)
             known_faces = []
             known_face_names = []
             for user_w_profile in users:
-                known_faces.append(get_face_encoding_from_base64(user_w_profile.profile,user_w_profile.name))
+                known_faces.append(stringToRGB(user_w_profile.profile)
                 known_face_names.append(user_w_profile.name)
             if len(image_receive) > 0:
                 print(known_face_names)
