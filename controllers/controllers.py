@@ -15,9 +15,11 @@ import numpy as np
 
 
 def get_face_encoding_from_base64(base64String):
-    image = fr.load_image_file(io.BytesIO(base64.b64decode(base64String)))
-    face_location = fr.face_locations(image)
-    image_encoding = fr.face_encodings(face_location)
+    image_encoding = None
+    with open("imageToSave.png", "wb") as f:
+        f.write(base64.decodebytes(img_data))
+        face_location = fr.face_locations(image)
+        image_encoding = fr.face_encodings(face_location)
     return image_encoding
 
 
